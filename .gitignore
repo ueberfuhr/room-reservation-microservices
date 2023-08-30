@@ -1,0 +1,13 @@
+# Common
+**/.*
+!**/.gitignore
+
+# Maven
+**/target
+# Groovy
+**/build
+# NPM
+**/node-modules
+
+# IntelliJ
+*.iml
