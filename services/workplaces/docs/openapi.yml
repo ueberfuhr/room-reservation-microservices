@@ -1,0 +1,66 @@
+openapi: 3.0.1
+info:
+  x-audience: external-partner
+  title: Workplace Management API
+  description: API to manage workplaces, rooms and equipments
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Local Development Server
+  - url: https://{stage}.domain.com
+    description: Staged Domain Server
+    variables:
+      stage:
+        description: Deployment Stage
+        default: prod
+        enum:
+          - dev
+          - qs
+          - prod
+tags:
+  - name: workplaces
+    description: Manage Workplaces
+  - name: rooms
+    description: Manage Rooms
+  - name: equipments
+    description: Manage Equipments
+paths:
+##############
+# Equipments #
+##############
+  /equipments:
+    get:
+      tags:
+        - equipments
+      summary: List available equipments
+      responses:
+        200:
+          description: Equipments were read successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Equipment'
+components:
+  schemas:
+    Equipment:
+      allOf:
+        - $ref: '../../../docs/openapi/hal.yml#/components/schemas/HAL'
+        - type: object
+          properties:
+            name:
+              type: string
+              pattern: '^[a-z][-?[a-z0-9]+]*$'
+              readOnly: true
+            description:
+              type: string
+  parameters:
+    equipmentName:
+      name: equipment
+      in: path
+      description: The name of the equipment
+      required: true
+      schema:
+        type: string
+        pattern: '^[a-z][-?[a-z0-9]+]*$'

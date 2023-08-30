@@ -1,0 +1,73 @@
+openapi: 3.0.0
+info:
+  title: HyperText Application Language Definitions
+  version: 1.0.0
+paths: { }
+components:
+  schemas:
+    HALLinkObject:
+      title: HALLinkObject
+      required:
+        - href
+      type: object
+      properties:
+        href:
+          type: string
+        templated:
+          type: boolean
+        type:
+          type: string
+        deprecation:
+          type: string
+        name:
+          type: string
+        profile:
+          type: string
+        title:
+          type: string
+        hreflang:
+          type: string
+    HALCuriesLink:
+      title: HALCuriesLink
+      required:
+        - templated
+        - href
+      type: object
+      properties:
+        templated:
+          type: string
+          example: True
+        href:
+          type: string
+        type:
+          type: string
+        deprecation:
+          type: string
+        name:
+          type: string
+        profile:
+          type: string
+        title:
+          type: string
+        hreflang:
+          type: string
+    HAL:
+      title: HAL
+      type: object
+      properties:
+        _links:
+          $ref: '#/components/schemas/Links'
+        _embedded:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/HAL'
+      description: JSON Hypertext Application Language. Definition of [HAL message format](https://tools.ietf.org/html/draft-kelly-json-hal-08)
+    Links:
+      title: Links
+      type: object
+      properties:
+        self:
+          $ref: '#/components/schemas/HALLinkObject'
+        # https://www.w3.org/TR/2010/NOTE-curie-20101216/
+        curies:
+          $ref: '#/components/schemas/HALCuriesLink'
