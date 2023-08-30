@@ -1,11 +1,16 @@
 # Common
 **/.*
 !**/.gitignore
+**/HELP.md
 
 # Maven
 **/target
-# Groovy
+**/mvn/wrapper
+**/mvn*
+# Gradle
 **/build
+**/gradle/wrapper
+**/gradlew*
 # NPM
 **/node-modules
 
