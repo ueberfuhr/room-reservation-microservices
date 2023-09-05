@@ -30,6 +30,7 @@ paths:
 ##############
   /equipments:
     get:
+      operationId: getEquipments
       tags:
         - equipments
       summary: List available equipments
@@ -37,11 +38,66 @@ paths:
         200:
           description: Equipments were read successfully
           content:
-            application/json:
+            application/hal+json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Equipment'
+                $ref: '#/components/schemas/EquipmentsList'
+  /equipments/{equipment}:
+    parameters:
+      - $ref: '#/components/parameters/equipmentName'
+    get:
+      operationId: getEquipment
+      tags:
+        - equipments
+      summary: Get information about a single equipment by its name.
+      responses:
+        '200':
+          description: Equipment was found
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/Equipment'
+        '404':
+          description: Equipment does not exist
+    put:
+      operationId: replaceEquipment
+      tags:
+        - equipments
+      summary: Create or update information about an equipment.
+      requestBody:
+        content:
+          application/hal+json:
+            schema:
+              $ref: '#/components/schemas/Equipment'
+        required: true
+      responses:
+        200:
+          description: Equipment was updated successfully
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/Equipment'
+        201:
+          description: Equipment was created successfully
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/Equipment'
+        400:
+          description: Equipment is not valid (e.g. name does not match the expected pattern)
+          content:
+            application/problem+json:
+              schema:
+                $ref: '../../../docs/openapi/rfc-7807.yml#/components/schemas/Problem'
+    delete:
+      operationId: deleteEquipment
+      tags:
+        - equipments
+      summary: Delete information about an equipment.
+      responses:
+        '204':
+          description: Equipment was deleted successfully
+        '404':
+          description: Equipment does not exist
 components:
   schemas:
     Equipment:
@@ -55,6 +111,12 @@ components:
               readOnly: true
             description:
               type: string
+    EquipmentsList:
+      allOf:
+        - $ref: '../../../docs/openapi/hal.yml#/components/schemas/HAL'
+        - type: array
+          items:
+            $ref: '#/components/schemas/Equipment'
   parameters:
     equipmentName:
       name: equipment

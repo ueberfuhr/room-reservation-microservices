@@ -61,6 +61,8 @@ components:
           type: object
           additionalProperties:
             $ref: '#/components/schemas/HAL'
+      discriminator:
+        propertyName: _links
       description: JSON Hypertext Application Language. Definition of [HAL message format](https://tools.ietf.org/html/draft-kelly-json-hal-08)
     Links:
       title: Links
@@ -71,3 +73,5 @@ components:
         # https://www.w3.org/TR/2010/NOTE-curie-20101216/
         curies:
           $ref: '#/components/schemas/HALCuriesLink'
+      additionalProperties:
+        $ref: '#/components/schemas/HALLinkObject'
