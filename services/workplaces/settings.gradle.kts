@@ -1,1 +1,1 @@
-rootProject.name = "workspaces-service"
+rootProject.name = "workplaces"

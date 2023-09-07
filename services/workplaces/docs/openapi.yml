@@ -40,7 +40,7 @@ paths:
           content:
             application/hal+json:
               schema:
-                $ref: '#/components/schemas/EquipmentsList'
+                $ref: '#/components/schemas/HALEquipmentsList'
   /equipments/{equipment}:
     parameters:
       - $ref: '#/components/parameters/equipmentName'
@@ -55,7 +55,7 @@ paths:
           content:
             application/hal+json:
               schema:
-                $ref: '#/components/schemas/Equipment'
+                $ref: '#/components/schemas/HALEquipment'
         '404':
           description: Equipment does not exist
     put:
@@ -75,13 +75,13 @@ paths:
           content:
             application/hal+json:
               schema:
-                $ref: '#/components/schemas/Equipment'
+                $ref: '#/components/schemas/HALEquipment'
         201:
           description: Equipment was created successfully
           content:
             application/hal+json:
               schema:
-                $ref: '#/components/schemas/Equipment'
+                $ref: '#/components/schemas/HALEquipment'
         400:
           description: Equipment is not valid (e.g. name does not match the expected pattern)
           content:
@@ -101,22 +101,30 @@ paths:
 components:
   schemas:
     Equipment:
+      type: object
+      properties:
+        name:
+          type: string
+          pattern: '^[a-z][-?[a-z0-9]+]*$'
+          readOnly: true
+        description:
+          type: string
+    HALEquipment:
+      allOf:
+        - $ref: '../../../docs/openapi/hal.yml#/components/schemas/HAL'
+        - $ref: '#/components/schemas/Equipment'
+    HALEquipmentsList:
       allOf:
         - $ref: '../../../docs/openapi/hal.yml#/components/schemas/HAL'
         - type: object
           properties:
-            name:
-              type: string
-              pattern: '^[a-z][-?[a-z0-9]+]*$'
-              readOnly: true
-            description:
-              type: string
-    EquipmentsList:
-      allOf:
-        - $ref: '../../../docs/openapi/hal.yml#/components/schemas/HAL'
-        - type: array
-          items:
-            $ref: '#/components/schemas/Equipment'
+            _embedded:
+              type: object
+              properties:
+                equipments:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/HALEquipment'
   parameters:
     equipmentName:
       name: equipment
